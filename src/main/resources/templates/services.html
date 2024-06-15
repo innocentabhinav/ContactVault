@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Services</title>
+</head>
+<body>
+<h1>This is services page</h1>
+<hr />
+
+<div  th:replace="~{base :: parent(~{:: #main-content })}">
+    <section id="main-content">
+        <h1>This is a Services content dynamically passed to base parent</h1>
+    </section>
+</div>
+
+</body>
+</html>
+

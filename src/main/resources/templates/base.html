@@ -1,0 +1,9 @@
+<div class="parent-fragment" th:fragment="parent(content)" xmlns:th="http://www.w3.org/1999/xhtml">
+    <h1>This is parent fragment</h1>
+    <p>mnbvjfh nhfjh,bvwejbfmn hjwb f,jhb</p>
+    <div th:replace="${content}"></div>
+</div>
+
+<div th:fragment="test(content)" xmlns:th="http://www.w3.org/1999/xhtml">
+<div th:replace="${content}"></div>
+</div>
