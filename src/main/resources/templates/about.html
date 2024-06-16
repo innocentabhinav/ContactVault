@@ -1,37 +1,15 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!doctype html>
+<html lang="en" th:replace="~{base :: parent(~{ :: #content},~{:: title},~{:: script})}" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
     <title>About</title>
-
 </head>
 <body>
-<h1>This is about page</h1>
 
-<!--<div class="host-tag" th:replace="~{base :: parent(~{:: section})} }">-->
-
-<!--<section>-->
-<!--    <h1>This is a Dynamic Services passed to base parent</h1>-->
-<!--</section>-->
-<!--<p>-->
-<!--    kjshfguasdlkfgn jkbfljhgsag  hblaskbglkjberaw-->
-<!--</p>-->
-<!--<button>Click on dynamic content</button>-->
-
-<!--using fragment-->
-<div class="host-tag" th:replace="${isLogin} ? ~{base :: parent(~{:: section})} : ~{base :: test(~{:: #not_logged_in})}">
-<section>
-    <h1>User is Logged in.</h1>
-    <p>This is dynamic content in about page</p>
-    <h2>Dynamic content here...</h2>
-    <button>Click on dynamic content</button>
-</section>
-
-    <section id="not_logged_in">
-        <h1>User not Logged in</h1>
-    </section>
-
+<div id="content">
+    <h1>Welcome to about page.</h1>
 </div>
+<script>
+    console.log("about page");
+</script>
 </body>
 </html>
-

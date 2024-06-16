@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<!doctype html>
+<html lang="en" th:replace="~{base :: parent(~{::#content},~{:: title},~{})}" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
     <title>Services</title>
 </head>
 <body>
-<h1>This is services page</h1>
-<hr />
-
-<div  th:replace="~{base :: parent(~{:: #main-content })}">
-    <section id="main-content">
-        <h1>This is a Services content dynamically passed to base parent</h1>
-    </section>
-</div>
+<section id="content">
+    <h1>Welcome to Services Page...</h1>
+    <h2>Here are the services offered by the Contact Vault...</h2>
+</section>
 
 </body>
 </html>
