@@ -39,7 +39,7 @@ public class User {
     private boolean phoneVerified=false;
 
     //Sign-in Self ,Google , Facebook , github etc
-    @Enumerated
+    @Enumerated(value = EnumType.STRING)
     private Providers provider=Providers.SELF;
 
     private String providerUserId;

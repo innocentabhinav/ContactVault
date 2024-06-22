@@ -2,7 +2,10 @@ package com.ContactVault.controllers;
 
 import com.ContactVault.entities.User;
 import com.ContactVault.forms.UserForm;
+import com.ContactVault.helpers.Message;
+import com.ContactVault.helpers.MessageType;
 import com.ContactVault.services.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,7 +62,7 @@ public class PageController {
 
 
     @RequestMapping(value ="/do-register", method= RequestMethod.POST)
-    public String processRegister(@ModelAttribute UserForm userForm){
+    public String processRegister(@ModelAttribute UserForm userForm, HttpSession session){
 
        // System.out.println(userForm);
 //                1. fetch formdata
@@ -67,22 +70,22 @@ public class PageController {
 
 //                3.Save to database
 //                4. userService
-
         //we are creating user from UserForm
-        User user=User.builder()
-                .name(userForm.getName())
-                .email(userForm.getEmail())
-                .password((userForm.getPassword()))
-                .about(userForm.getAbout())
-                .phoneNumber(userForm.getPhoneNumber())
-                .profilePic("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vecteezy.com%2Ffree-vector%2Fdefault-profile-picture&psig=AOvVaw0UrvFNdn99x2NOGj5_fyJX&ust=1719121983705000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCKCwoMvC7oYDFQAAAAAdAAAAABAE")
-                .build();
+        User user=new User();
+        user.setName(userForm.getName());
+        user.setEmail(userForm.getEmail());
+        user.setAbout(userForm.getAbout());
+        user.setPhoneNumber(userForm.getPhoneNumber());
+        user.setPassword(userForm.getPassword());
+        user.setProfilePic("https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.vecteezy.com%2Ffree-vector%2Fdefault-profile-picture&psig=AOvVaw0UrvFNdn99x2NOGj5_fyJX&ust=1719121983705000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCKCwoMvC7oYDFQAAAAAdAAAAABAE");
 
         User savedUser=userService.saveUser(user);
         System.out.println("User Saved");
 
 
 //                5.show message : registration successfull
+        Message message=Message.builder().content("Registration Successful !").type(MessageType.green).build();
+        session.setAttribute("message",message);
 //                6.redirect to login page
 
 
