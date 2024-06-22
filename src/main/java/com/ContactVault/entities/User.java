@@ -39,7 +39,9 @@ public class User {
     private boolean phoneVerified=false;
 
     //Sign-in Self ,Google , Facebook , github etc
+    @Enumerated
     private Providers provider=Providers.SELF;
+
     private String providerUserId;
 
     //CascadeType  means here that if user is deleted then its conatact get deleted or added then its get added.
