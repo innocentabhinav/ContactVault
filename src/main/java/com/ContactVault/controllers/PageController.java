@@ -6,13 +6,17 @@ import com.ContactVault.helpers.Message;
 import com.ContactVault.helpers.MessageType;
 import com.ContactVault.services.UserService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.naming.Binding;
 
 @Controller
 public class PageController {
@@ -49,7 +53,6 @@ public class PageController {
     @GetMapping ("/register")
     public String registerPage(Model model){
         UserForm userForm=new UserForm();
-//        userForm.setName("abhinav");
         model.addAttribute("userForm",userForm);
         return "register";
 
@@ -62,14 +65,21 @@ public class PageController {
 
 
     @RequestMapping(value ="/do-register", method= RequestMethod.POST)
-    public String processRegister(@ModelAttribute UserForm userForm, HttpSession session){
+    public String processRegister(@Valid @ModelAttribute UserForm userForm, BindingResult rBindingResult , HttpSession session){
 
        // System.out.println(userForm);
-//                1. fetch formdata
-//                2. validate Formdata
+//      1. fetch formdata
+//      2. validate Formdata
+        //Here @Valid checks that the data entered by the user at the time of signup is valid
+        // Binding results object is use to check that it has errors or not , if error then again show the view register
+        if(rBindingResult.hasErrors()){
+            return "register";
+        }
 
-//                3.Save to database
-//                4. userService
+
+
+//      3.Save to database
+//      4. userService
         //we are creating user from UserForm
         User user=new User();
         user.setName(userForm.getName());
@@ -83,12 +93,10 @@ public class PageController {
         System.out.println("User Saved");
 
 
-//                5.show message : registration successfull
+//      5.show message : registration successfull
         Message message=Message.builder().content("Registration Successful !").type(MessageType.green).build();
         session.setAttribute("message",message);
-//                6.redirect to login page
-
-
+//      6.redirect to login page
 
 
         return "redirect:/register";
