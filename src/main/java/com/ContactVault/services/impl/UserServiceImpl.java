@@ -1,12 +1,14 @@
 package com.ContactVault.services.impl;
 
 import com.ContactVault.entities.User;
+import com.ContactVault.helpers.AppConstants;
 import com.ContactVault.helpers.ResourceNotFoundException;
 import com.ContactVault.repositories.UserRepo;
 import com.ContactVault.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private Logger logger= LoggerFactory.getLogger(this.getClass());
 
@@ -28,6 +32,11 @@ public class UserServiceImpl implements UserService {
         user.setUserId(userId);
         //password encode
        // user.setPassword();
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        //set user role
+        user.setRoleList(List.of(AppConstants.ROLE_USER));
+
         return userRepo.save(user);
     }
 
