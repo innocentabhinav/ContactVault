@@ -26,6 +26,11 @@ public class PageController {
 //If you want to send a dynamic data to html from controller then u can use a Model object in the parameter in the controller method .
 
 
+    @GetMapping("/")
+    public String Index(){
+        return "redirect:/home";
+    }
+
     @RequestMapping("/home")
     public String Home(Model model){
         model.addAttribute("name","Abhinav");

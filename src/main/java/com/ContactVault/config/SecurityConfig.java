@@ -8,15 +8,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 
 @Configuration
 public class SecurityConfig {
 
-    @Autowired
-    private SecurityCustomUserDetailsService userDetailsService;
     //user create and login using java code inMemory service
 //    @Bean
 //    public UserDetailsService userDetailsService(){
@@ -33,12 +34,17 @@ public class SecurityConfig {
 //        return inMemoryUserDetailsManager;
 //    }
 
-    /*Below we are doing that: Whenever we are getting request for login with username and password
+
+    /*Below we are doing that: config of authentication provider for spring security
+      Whenever we are getting request for login with username and password
       user will be loaded from userDetailsService i.e what we have implemented in SecurityCustomUserDetailsService
-      i.e there it will load username from database if it exists and then authentication happens
+      i.e. there it will load username from database if it exists and then authentication happens
       if the username coming from database and username we are passing at the time of login matches
       then user is logged in.
     */
+
+    @Autowired
+    private SecurityCustomUserDetailsService userDetailsService;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
@@ -49,6 +55,20 @@ public class SecurityConfig {
         //password encoder ka object is passed in below method using below defined passwordEncoder method
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        //configured which url to be private and which to be public
+        httpSecurity.authorizeHttpRequests(authorize->{
+            authorize.requestMatchers("/user/**").authenticated();
+            authorize.anyRequest().permitAll();
+        });
+
+        //for now form default login , if want to configure can do here
+        httpSecurity.formLogin(Customizer.withDefaults());
+
+        return httpSecurity.build();
     }
 
 
