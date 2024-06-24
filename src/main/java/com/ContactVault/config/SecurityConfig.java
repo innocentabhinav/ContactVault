@@ -54,6 +54,9 @@ public class SecurityConfig {
     @Autowired
     private SecurityCustomUserDetailsService userDetailsService;
 
+    @Autowired
+    private OAuthAuthenicationSuccessHandler handler;
+
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider daoAuthenticationProvider=new DaoAuthenticationProvider();
@@ -87,6 +90,14 @@ public class SecurityConfig {
 
         //if csrf is enabled we will have to hit post method only , and we have get for logout , so disabling
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
+
+        //oauth configurations
+        httpSecurity.oauth2Login(oauth -> {
+            oauth.loginPage("/login");
+            oauth.successHandler(handler);
+        });
+
+
         httpSecurity.logout(logoutForm-> {
             logoutForm.logoutUrl("/logout");
         });
