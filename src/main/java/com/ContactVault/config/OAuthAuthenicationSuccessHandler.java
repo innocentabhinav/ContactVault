@@ -36,11 +36,14 @@ public class OAuthAuthenicationSuccessHandler implements AuthenticationSuccessHa
 
         logger.info("OAuthAuthenicationSuccessHandler");
 
-       var oAuth2User= (DefaultOAuth2User)authentication.getPrincipal();
 
         //identifying provider
         var oauth2AuthenticationToken= (OAuth2AuthenticationToken)authentication;
         String authorizedClientRegistrationId=oauth2AuthenticationToken.getAuthorizedClientRegistrationId();
+
+        logger.info(authorizedClientRegistrationId);
+        var oAuth2User= (DefaultOAuth2User)authentication.getPrincipal();
+
 
         User user=new User();
         user.setUserId(UUID.randomUUID().toString());
