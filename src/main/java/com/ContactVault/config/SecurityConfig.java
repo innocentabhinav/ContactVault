@@ -82,7 +82,7 @@ public class SecurityConfig {
         httpSecurity.formLogin(formLogin -> {
             formLogin.loginPage("/login")
             .loginProcessingUrl("/authenticate")
-            .successForwardUrl("/user/dashboard")
+            .successForwardUrl("/user/profile")
             .usernameParameter("email")
             .passwordParameter("password");
 
@@ -97,9 +97,9 @@ public class SecurityConfig {
             oauth.successHandler(handler);
         });
 
-
         httpSecurity.logout(logoutForm-> {
             logoutForm.logoutUrl("/logout");
+            logoutForm.logoutSuccessUrl("/login?logout=true");
         });
 
         return httpSecurity.build();
