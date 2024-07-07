@@ -7,13 +7,12 @@ import com.ContactVault.helpers.Helper;
 import com.ContactVault.helpers.Message;
 import com.ContactVault.helpers.MessageType;
 import com.ContactVault.services.ContactService;
+import com.ContactVault.services.ImageService;
 import com.ContactVault.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -23,11 +22,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.UUID;
+
 @Controller
 @RequestMapping("/user/contacts")
 public class ContactController {
+
+    private Logger logger= LoggerFactory.getLogger(ContactController.class);
+
     @Autowired
     private ContactService contactService;
+
+    @Autowired
+    private ImageService imageService ;
 
     @Autowired
     private UserService userService ;
@@ -58,7 +65,11 @@ public class ContactController {
 
         User user = userService.getUserByEmail(username);
 
-        //process the contact picture
+        //process the contact picture .i.e code for uploading profile pic
+        logger.info("file information : {}" , contactForm.getContactImage().getOriginalFilename());
+
+        String filename= UUID.randomUUID().toString();
+        String fileUrl=imageService.uploadImage(contactForm.getContactImage() ,filename);
 
         Contact contact=new Contact();
         contact.setName(contactForm.getName());
@@ -70,9 +81,8 @@ public class ContactController {
         contact.setUser(user);
         contact.setLinkedInLink(contactForm.getLinkedInLink());
         contact.setWebsiteLink(contactForm.getWebsiteLink());
-
-
-
+        contact.setPicture(fileUrl);
+        contact.setCloudinaryImagePublicId(filename);
 
         contactService.SaveContact(contact);
         System.out.println(contactForm);

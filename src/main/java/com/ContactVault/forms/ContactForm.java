@@ -33,7 +33,8 @@ public class ContactForm {
     private String websiteLink;
     private String linkedInLink;
 
-    private MultipartFile profileImage;
+    // will create annotation to validate file size and validation
+    private MultipartFile contactImage;
 
 
 
