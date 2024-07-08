@@ -1,6 +1,7 @@
 package com.ContactVault.services;
 
 import com.ContactVault.entities.Contact;
+import com.ContactVault.entities.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +28,9 @@ public interface ContactService {
 
     //get contacts by id
     List<Contact> getByUserid(String userId);
+
+    List<Contact> getByUser(User user);
+
 
 
 
