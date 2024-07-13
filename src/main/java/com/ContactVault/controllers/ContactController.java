@@ -3,6 +3,7 @@ package com.ContactVault.controllers;
 import com.ContactVault.entities.Contact;
 import com.ContactVault.entities.User;
 import com.ContactVault.forms.ContactForm;
+import com.ContactVault.helpers.AppConstants;
 import com.ContactVault.helpers.Helper;
 import com.ContactVault.helpers.Message;
 import com.ContactVault.helpers.MessageType;
@@ -14,6 +15,7 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.UUID;
@@ -104,12 +107,19 @@ public class ContactController {
     //View Contacts
 
     @RequestMapping
-    public String ViewContacts(Model model ,Authentication authentication){
+    public String ViewContacts(@RequestParam(value = "page",defaultValue = "0") int page ,
+                               @RequestParam(value = "size",defaultValue = AppConstants.PAGE_SIZE+"") int size ,
+                               @RequestParam(value = "sortBy",defaultValue = "name") String sortBy ,
+                               @RequestParam(value = "direction",defaultValue = "asc") String direction ,
+                               Model model , Authentication authentication){
 
         String username=Helper.getEmailOfLoggedInUser(authentication);
         User user=userService.getUserByEmail(username);
-        List<Contact> contacts=contactService.getByUser(user);
-        model.addAttribute("contacts",contacts);
+        Page<Contact> pageContact=contactService.getByUser(user,page,size,sortBy,direction);
+
+        model.addAttribute("pageContact",pageContact);
+        model.addAttribute("pageSize", AppConstants.PAGE_SIZE);
+
         return "user/contacts";
     }
 
